@@ -1,22 +1,34 @@
 package com.harsh.resteasy.marketplace.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+@JsonRootName(value = "project")
 public class Project {
-    String description;
-    double maxBudget;
+    private static AtomicInteger count = new AtomicInteger(0);
 
-    public String getDescription() {
-        return description;
-    }
+    @JsonProperty
+    private final int id;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    @JsonProperty
+    private final String description;
 
-    public double getMaxBudget() {
-        return maxBudget;
-    }
+    @JsonProperty
+    private final double maxBudget;
 
-    public void setMaxBudget(double maxBudget) {
-        this.maxBudget = maxBudget;
+    @JsonProperty
+    private final int sellerId;
+
+    public Project(final CreateProjectRequest createProjectRequest) throws IllegalArgumentException {
+        if (!createProjectRequest.isValid()) {
+            throw new IllegalArgumentException();
+        }
+
+        this.sellerId =  createProjectRequest.getSellerId();
+        this.description = createProjectRequest.getDescription();
+        this.maxBudget = createProjectRequest.getMaxBudget();
+        this.id = count.incrementAndGet();
     }
 }

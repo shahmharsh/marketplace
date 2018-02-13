@@ -1,5 +1,6 @@
 package com.harsh.resteasy.marketplace;
 
+import com.harsh.resteasy.marketplace.managers.ProjectManager;
 import com.harsh.resteasy.marketplace.resources.ProjectResource;
 
 import javax.ws.rs.core.Application;
@@ -12,7 +13,8 @@ public class RestApplication extends Application {
     private final Set<Object> singletons;
 
     public RestApplication () {
-        final ProjectResource messageResource = new ProjectResource();
+        final ProjectManager projectManager = new ProjectManager();
+        final ProjectResource messageResource = new ProjectResource(projectManager);
         singletons = Collections.unmodifiableSet(Stream.of(
                 messageResource
         ).collect(Collectors.toSet()));
